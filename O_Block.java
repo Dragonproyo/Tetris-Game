@@ -1,20 +1,20 @@
-public class O_Block extends Blocks {
+public class O_Block extends Blocks /*implements nextBlock */ {
 	
 	public O_Block(int x, int y, Orientation orientation) {
 		this.x = x;
 		this.y = y;
 		this.orientation = orientation;
-		this.blockType = BlockType.ZBlock;
+		this.blockType = BlockType.OBlock;
 	}
 	
 	public O_Block(Orientation orientation) {
 		this.orientation = orientation;
-		this.blockType = BlockType.ZBlock;
+		this.blockType = BlockType.OBlock;
 	}
 	
 	public O_Block() {
-		this.orientation = Orientation.Up;
-		this.blockType = BlockType.ZBlock;
+		this.orientation = Orientation.Down;
+		this.blockType = BlockType.OBlock;
 	}
 	
 	public void spawnBlock(String[][] screen, String fill) {
@@ -55,16 +55,15 @@ public class O_Block extends Blocks {
 		return valid;
 	}
 	
-	public void rotateClockwise() {
-		
-	}
-	
-	public void rotateCounterClockwise() {
-		
-	}
-	
 	public boolean rotatable(String rotateDirection) {
 		boolean value = true;
 		return value;
+	}
+	
+	public void getNextBlock(String[][] screen, String fill) {
+		screen[nextY][nextX] = fill;
+		screen[nextY][nextX + 1] = fill;
+		screen[nextY + 1][nextX] = fill;
+		screen[nextY + 1][nextX + 1] = fill;
 	}
 }

@@ -1,6 +1,6 @@
 
 
-public class T_Block extends Blocks {
+public class T_Block extends Blocks /*implements nextBlock */ {
 	
 	public T_Block(int x, int y, Orientation orientation) {
 		this.x = x;
@@ -15,7 +15,7 @@ public class T_Block extends Blocks {
 	}
 	
 	public T_Block() {
-		this.orientation = Orientation.Up;
+		this.orientation = Orientation.Down;
 		this.blockType = BlockType.TBlock;
 	}
 	
@@ -161,17 +161,43 @@ public class T_Block extends Blocks {
 		return valid;
 	}
 	
-	public void rotateClockwise() {
-		
-	}
-	
-	public void rotateCounterClockwise() {
-		
-	}
-	
 	public boolean rotatable(String rotateDirection) {
 		boolean value = true;
+		switch (orientation) {
+			case Down:
+				if (Screen.screen[y + 2][x] != "  ") {
+					value = false;
+				}
+				break;
+				
+			case Up:
+				if (Screen.screen[y + 1][x - 1] != "  " ||
+				Screen.screen[y + 2][x] != "  ") {
+					value = false;
+				}
+				break;
+			
+			case Left:
+				if (Screen.screen[y][x - 1] != "  " ||
+				Screen.screen[y][x + 1] != "  ") {
+					value = false;
+				}
+				break;
+				
+			case Right:
+				if (Screen.screen[y + 1][x + 1] != "  ") {
+					value = false;
+				}
+				break;
+		}
 		return value;
+	}
+	
+	public void getNextBlock(String[][] screen, String fill) {
+		screen[nextY][nextX] = fill;
+		screen[nextY + 1][nextX - 1] = fill;
+		screen[nextY + 1][nextX] = fill;
+		screen[nextY + 1][nextX + 1] = fill;
 	}
 }
 

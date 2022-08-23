@@ -1,20 +1,20 @@
-public class L_Block extends Blocks {
+public class L_Block extends Blocks /*implements nextBlock */ {
 	
 	public L_Block(int x, int y, Orientation orientation) {
 		this.x = x;
 		this.y = y;
 		this.orientation = orientation;
-		this.blockType = BlockType.ZBlock;
+		this.blockType = BlockType.LBlock;
 	}
 	
 	public L_Block(Orientation orientation) {
 		this.orientation = orientation;
-		this.blockType = BlockType.ZBlock;
+		this.blockType = BlockType.LBlock;
 	}
 	
 	public L_Block() {
-		this.orientation = Orientation.Up;
-		this.blockType = BlockType.ZBlock;
+		this.orientation = Orientation.Down;
+		this.blockType = BlockType.LBlock;
 	}
 	
 	public void spawnBlock(String[][] screen, String fill) {
@@ -159,16 +159,49 @@ public class L_Block extends Blocks {
 		return valid;
 	}
 	
-	public void rotateClockwise() {
-		
-	}
-	
-	public void rotateCounterClockwise() {
-		
-	}
 	
 	public boolean rotatable(String rotateDirection) {
 		boolean value = true;
+		switch (orientation) {
+			case Down:
+				if (Screen.screen[y][x + 1] != "  " ||
+				Screen.screen[y + 1][x - 1] != "  " ||
+				Screen.screen[y + 1][x + 1] != "  ") {
+					value = false;
+				}
+				break;
+				
+			case Up:
+				if (Screen.screen[y][x + 1] != "  " ||
+				Screen.screen[y + 1][x - 1] != "  ") {
+					value = false;
+				}
+				break;
+			
+			case Left:
+				if (Screen.screen[y][x] != "  " ||
+				Screen.screen[y][x - 1] != "  " ||
+				Screen.screen[y + 2][x] != "  ") {
+					value = false;
+				}
+				break;
+				
+			case Right:
+				if (Screen.screen[y + 1][x] != "  " ||
+				Screen.screen[y + 2][x] != "  " ||
+				Screen.screen[y + 2][x + 1] != "  ") {
+					value = false;
+				}
+				break;
+		}
+		//      Screen.
 		return value;
+	}
+	
+	public void getNextBlock(String[][] screen, String fill) {
+		screen[nextY][nextX] = fill;
+		screen[nextY + 1][nextX] = fill;
+		screen[nextY + 2][nextX] = fill;
+		screen[nextY + 2][nextX + 1] = fill;
 	}
 }

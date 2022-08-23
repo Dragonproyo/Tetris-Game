@@ -15,6 +15,7 @@ public class Screen {
 	
 	static boolean gameOver = false;
 	
+	
 	public boolean getGameOver() {
 		return gameOver;
 	}
@@ -25,7 +26,25 @@ public class Screen {
 	
 	static String requirement = "|                    |";
 	
+	static int clearCount = 0;
+	static int score = 0;
+	
 	static String full = "|::::::::::::::::::::|";
+	
+	static String[][] nextBlock = {
+			{" ", "__", "__", "__", "__", "__", " "},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{"|", "  ", "  ", "  ", "  ", "  ", "|"},
+			{" ", "‾‾", "‾‾", "‾‾", "‾‾", "‾‾", " "},
+	};
 	
 	static String[][] screen = {
 			 {"|", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "|"},
@@ -43,8 +62,16 @@ public class Screen {
 			 {"|", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "|"},
 			 {"|", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "|"},
 			 {"|", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "  ", "|"},
-			 {"-", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "-"},
+			 {" ", "‾‾", "‾‾", "‾‾", "‾‾", "‾‾", "‾‾", "‾‾", "‾‾", "‾‾", "‾‾", " "},
 			};
+	
+	public static void resetNext() {
+		for (int i = 1; i < nextBlock.length - 1; i ++) {
+			for (int j = 1; j < nextBlock[i].length - 1; j++) {
+				nextBlock[i][j] = "  ";
+			}
+		}
+	}
 	
 	static void displayScreen() {
 		String read = "";
@@ -52,19 +79,54 @@ public class Screen {
 			for (int j = 0; j < screen[0].length; j++) {
 				read = read + screen[i][j];
 			}
+			if (i < nextBlock.length) {
+				for (int j = 1; j < nextBlock[i].length; j++) {
+					read = read + nextBlock[i][j];
+				}
+			}
 			read = read + "\n";
+			
+			
 		}
 		System.out.println(read);
 	}
 	
+	static void displayNextBlocks() {
+		displayNext();
+		String read = "";
+		for (int i = 0; i < nextBlock.length; i++) {
+			for (int j = 0; j < nextBlock[0].length; j++) {
+				read = read + nextBlock[i][j];
+			}
+			read = read + "\n";
+		}
+		//System.out.println(read);
+	}
+	
 	static void clearAndDrop() {
+		clearCount = 0;
 		for (int k = 0; k < 4; k++) {
 			for (int i = 14; i > 0; i--) {
 				if (clearable(i)) {
-					clearRow(i);				
+					clearRow(i);
+					clearCount++;
 				}
 			}
 			dropRow();
+		}
+		switch (clearCount) {
+			case 1:
+				score = score + 40;
+				break;
+			case 2:
+				score = score + 100;
+				break;
+			case 3:
+				score = score + 300;
+				break;
+			case 4:
+				score = score + 1200;
+				break;
 		}
 	}
 	
@@ -114,7 +176,6 @@ public class Screen {
 		}
 	}
 	
-	
 	static boolean checkGameOver() {
 		String read = "";
 		for (int i = 0; i < screen[0].length; i++) {
@@ -125,5 +186,30 @@ public class Screen {
 		}
 		return gameOver;
 	}
+	
+	public static void displayScore() {
+		String read = " _______";
+		//Top Score Box
+		for (int i = 0; i < Integer.toString(score).length(); i++) {
+			read = read + "_";
+		}
+		System.out.println(read);
+		System.out.println("|Score: " + score + "|");
+		
+		read = read + "_";
+		//Bottom score box
+		read = " ‾‾‾‾‾‾‾";
+		for (int i = 0; i < Integer.toString(score).length(); i++) {
+			read = read + "‾";
+		}
+		System.out.println(read);
 
+	}
+	
+	public static void displayNext() {
+		resetNext();
+		OOPGame.blocksList.get(1).getNextBlock(Screen.nextBlock, "::");
+
+	}
+	
 }

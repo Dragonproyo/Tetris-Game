@@ -1,20 +1,20 @@
-public class I_Block extends Blocks {
+public class I_Block extends Blocks /*implements nextBlock */{
 	
 	public I_Block(int x, int y, Orientation orientation) {
 		this.x = x;
 		this.y = y;
 		this.orientation = orientation;
-		this.blockType = BlockType.ZBlock;
+		this.blockType = BlockType.IBlock;
 	}
 	
 	public I_Block(Orientation orientation) {
 		this.orientation = orientation;
-		this.blockType = BlockType.ZBlock;
+		this.blockType = BlockType.IBlock;
 	}
 	
 	public I_Block() {
-		this.orientation = Orientation.Up;
-		this.blockType = BlockType.ZBlock;
+		this.orientation = Orientation.Down;
+		this.blockType = BlockType.IBlock;
 	}
 	
 	public void spawnBlock(String[][] screen, String fill) {
@@ -117,98 +117,35 @@ public class I_Block extends Blocks {
 		return valid;
 	}
 	
-	public void rotateClockwise() {
-		if (orientation == Orientation.Down) {
-			this.orientation = Orientation.Left;
-		}
-		
-		
-		if (orientation == Orientation.Left) {
-			this.orientation = Orientation.Up;
-
-		}
-		
-		if (orientation == Orientation.Up) {
-			this.orientation = Orientation.Right;
-
-		}
-		
-		if (orientation == Orientation.Right) {
-			this.orientation = Orientation.Down;
-
-		}
-	}
-	
-	public void rotateCounterClockwise() {
-		if (orientation == Orientation.Down) {
-			this.orientation = Orientation.Right;
-		}
-		
-		
-		if (orientation == Orientation.Right) {
-			this.orientation = Orientation.Up;
-
-		}
-		
-		if (orientation == Orientation.Up) {
-			this.orientation = Orientation.Left;
-
-		}
-		
-		if (orientation == Orientation.Left) {
-			this.orientation = Orientation.Down;
-
-		}
-	}
-	
 	public boolean rotatable(String rotateDirection) {
-		boolean value = false;
-
-		switch (rotateDirection) {
-			case "Left":
-				switch (orientation) {
-				case Down:					
-				case Up:
-					if (Screen.screen[y][x - 1] != "  " &&
-						Screen.screen[y][x + 1] != "  " &&
-						Screen.screen[y][x + 2] != "  ") {
-						value = true;
-					}
-					break;
-				
-				case Left:				
-				case Right:
-					if (Screen.screen[y + 1][x] != "  " &&
-					Screen.screen[y + 2][x] != "  " &&
-					Screen.screen[y + 3][x] != "  ") {
-						value = true;
-					}
-					break;
+		boolean value = true;
+		
+		switch (orientation) {
+			case Down:					
+			case Up:
+				if (Screen.screen[y][x - 1] != "  " ||
+					Screen.screen[y][x + 1] != "  " ||
+					Screen.screen[y][x + 2] != "  ") {
+					value = false;
 				}
 				break;
-				
-			case "Right":
-				switch (orientation) {
-				case Down:
-				case Up:
-					if (Screen.screen[y][x - 1] != "  " &&
-						Screen.screen[y][x + 1] != "  " &&
-						Screen.screen[y][x + 2] != "  ") {
-						value = true;
-					}
-					break;
-				
-				case Left:
-				case Right:
-					if (Screen.screen[y + 1][x] != "  " &&
-						Screen.screen[y + 2][x] != "  " &&
-						Screen.screen[y + 3][x] != "  ") {
-						value = true;
-					}
-					break;
+			
+			case Left:				
+			case Right:
+				if (Screen.screen[y + 1][x] != "  " ||
+				Screen.screen[y + 2][x] != "  " ||
+				Screen.screen[y + 3][x] != "  ") {
+					value = false;
 				}
 				break;
 		}
 		return value;
+	}
+	
+	public void getNextBlock(String[][] screen, String fill) {
+		screen[nextY][nextX] = fill;
+		screen[nextY + 1][nextX] = fill;
+		screen[nextY + 2][nextX] = fill;
+		screen[nextY + 3][nextX] = fill;
 	}
 }
